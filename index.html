@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queres ser minha madrinha?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2e6ff;
+            color: #4a148c;
+            text-align: center;
+            padding: 50px;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #6a1b9a;
+            margin-bottom: 50px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        button {
+            background-color: #6a1b9a;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            margin: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4a148c;
+        }
+
+        #sim {
+            animation: popIn 1s ease;
+        }
+
+        #sim:active {
+            transform: scale(1.2);
+            background-color: #8e24aa;
+            box-shadow: 0 0 15px #ff69b4;
+        }
+
+        #nao {
+            position: relative;
+            animation: popIn 1.2s ease;
+        }
+
+        #nao:hover {
+            transform: rotate(360deg);
+            transition: 0.5s;
+        }
+
+        #mensagem {
+            font-size: 2rem;
+            color: #4a148c;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #mensagem-extra {
+            font-size: 1.5rem;
+            color: #4a148c;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #kinder-img {
+            display: none;
+            margin-top: 20px;
+            width: 350px; /* Aumentar o tamanho da imagem */
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* Sombra ajustada */
+            border-radius: 10px; /* Adiciona bordas arredondadas */
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Confetti Particles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #6a1b9a;
+            opacity: 0;
+            animation: confetti-fall 3s ease-in-out forwards;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Brilho no fundo ao clicar no Sim */
+        body.animate-background {
+            background-color: #e1bee7;
+            transition: background-color 1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Queres ser minha madrinha?</h1>
+        <button id="sim">Sim</button>
+        <button id="nao">Não</button>
+        <p id="mensagem" class="glitter">Muito obrigado! 🎉✨</p>
+        <p id="mensagem-extra">Posso não ser preto, mas posso servir de Kinder Bueno White. É uma benção para ti, me teres como afilhado! 😄</p>
+        <img id="kinder-img" src="kinder.png" alt="Kinder Bueno White">
+        <audio id="celebrationSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+    </div>
+
+    <script>
+        const simButton = document.getElementById('sim');
+        const naoButton = document.getElementById('nao');
+        const mensagem = document.getElementById('mensagem');
+        const mensagemExtra = document.getElementById('mensagem-extra');
+        const kinderImg = document.getElementById('kinder-img');
+        const celebrationSound = document.getElementById('celebrationSound');
+        const body = document.body;
+
+        // Função para mostrar a mensagem, som e iniciar ondas de confetti
+        simButton.addEventListener('click', () => {
+            mensagem.style.display = 'block';
+            mensagemExtra.style.display = 'block';
+            kinderImg.style.display = 'block';
+
+            celebrationSound.play();
+
+            // Alterar fundo
+            body.classList.add('animate-background');
+
+            // Mostrar várias ondas de confetti
+            startConfettiWaves();
+
+            // Esconder botões
+            simButton.style.display = 'none';
+            naoButton.style.display = 'none';
+        });
+
+        // Função para mover o botão "Não" de forma mais criativa
+        naoButton.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - naoButton.offsetWidth);
+            const y = Math.random() * (window.innerHeight - naoButton.offsetHeight);
+
+            naoButton.style.position = 'absolute';
+            naoButton.style.left = `${x}px`;
+            naoButton.style.top = `${y}px`;
+        });
+
+        // Função para iniciar ondas de confetti
+        function startConfettiWaves() {
+            let wave = 0;
+            const intervalId = setInterval(() => {
+                createConfettiWave();
+                wave++;
+                if (wave === 5) {
+                    clearInterval(intervalId);
+                }
+            }, 1000); // Intervalo entre as ondas de confetti
+        }
+
+        // Função para criar uma onda de confetti
+        function createConfettiWave() {
+            for (let i = 0; i < 200; i++) {
+                createConfetti();
+            }
+        }
+
+        // Função para criar confetti animado
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+
+            // Cor aleatória para o confetti
+            const colors = ['#ffccff', '#cc99ff', '#9933cc', '#660099', '#cc66ff', '#ff69b4', '#ffffff'];
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+            // Tamanho aleatório
+            confetti.style.width = `${Math.random() * 10 + 5}px`;
+            confetti.style.height = confetti.style.width;
+
+            // Posição aleatória
+            confetti.style.left = `${Math.random() * window.innerWidth}px`;
+            confetti.style.top = `${Math.random() * -50}px`; // Partem de cima da página
+
+            document.body.appendChild(confetti);
+
+            // Remover confetti depois da animação
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
